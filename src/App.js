@@ -7,7 +7,7 @@ function App() {
     <Container>
       <Row>
         <Col>
-            <h1>Architecture Ref. Card 2</h1>
+            <h1>Architecture Ref. Card 2 (19.02.2025)</h1>
             <div className="message">
               react app ... up and running
             </div>
