@@ -8,7 +8,7 @@ jobs:
   setup:
     runs-on: ubuntu-22.04
     outputs:
-      node_modules: ${{ steps.upload-node-modules.outputs.path }}
+      node_modules: npm i
     steps:
       - name: Checkout code
         uses: actions/checkout@v4  # Aktualisierte Checkout-Version
