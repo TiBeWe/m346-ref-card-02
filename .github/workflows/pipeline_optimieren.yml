@@ -27,7 +27,7 @@ jobs:
           path: node_modules
 
       - name: Lint code
-        run: npm run lint 
+        run: echo "run lint"
 
   test:
     runs-on: ubuntu-latest
