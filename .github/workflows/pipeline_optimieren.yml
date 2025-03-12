@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI Pipeline Optimiert
 
 on:
   push:
@@ -6,10 +6,12 @@ on:
       - main
 
 jobs:
-  lint:
+  install:
     runs-on: ubuntu-latest
+    outputs:
+      node_modules_artifact: node-modules
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
       - name: Set up Node.js
@@ -18,60 +20,87 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          echo "npm install"
+          # Hier würde der eigentliche Befehl stehen: npm install
 
-      - name: Upload node_modules artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload node_modules
+        uses: actions/upload-artifact@v2
         with:
-          name: node_modules
+          name: node-modules
           path: node_modules
 
-      - name: Lint code
-        run: echo "run lint"
+  lint:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node-modules
+
+      - name: Lint Code
+        run: echo "linter running"
 
   test:
     runs-on: ubuntu-latest
+    needs: install
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Download node_modules artifact
-        uses: actions/download-artifact@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          name: node_modules
-          path: node_modules
+          node-version: '18'
 
-      - name: Run tests
-        run: echo "Tests running"
+      - name: Download node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node-modules
 
-  run_build:
+      - name: Run Tests
+        run: echo "tests running"
+
+  build:
     runs-on: ubuntu-latest
     needs: [lint, test]
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Download node_modules artifact
-        uses: actions/download-artifact@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          name: node_modules
-          path: node_modules
+          node-version: '18'
 
-      - name: Build application
-        run: echo "Building application..."
+      - name: Download node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node-modules
+
+      - name: Build Application
+        run: echo "build application"
 
   deploy:
     runs-on: ubuntu-latest
-    needs: run_build
+    needs: build
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Download node_modules artifact
-        uses: actions/download-artifact@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          name: node_modules
-          path: node_modules
+          node-version: '18'
 
-      - name: Deploy application
-        run: echo "Deploying application..."
+      - name: Deploy Application
+        run: echo "deploying application..."
