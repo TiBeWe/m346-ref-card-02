@@ -20,9 +20,7 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: |
-          echo "npm install"
-          # Hier würde der eigentliche Befehl stehen: npm install
+        run: npm install
 
       - name: Upload node_modules
         uses: actions/upload-artifact@v2
