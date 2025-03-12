@@ -1,0 +1,95 @@
+name: Optimized CI Pipeline
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: ubuntu-22.04
+    outputs:
+      node_modules: ${{ steps.upload-node-modules.outputs.path }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Upload node_modules
+        uses: actions/upload-artifact@v2
+        with:
+          name: node_modules
+          path: node_modules
+
+  lint:
+    runs-on: ubuntu-22.04
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node_modules
+          path: node_modules
+
+      - name: Run linter
+        run: echo "Linting..." # Ersetzen durch: npm run lint
+
+  test:
+    runs-on: ubuntu-22.04
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node_modules
+          path: node_modules
+
+      - name: Run tests
+        run: npm run test
+
+  build:
+    runs-on: ubuntu-22.04
+    needs: [lint, test] # Abhängig von Lint und Test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v2
+        with:
+          name: node_modules
+          path: node_modules
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build/
+
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build/
+
+      - name: Deploy application
+        run: echo "Deploying..."
