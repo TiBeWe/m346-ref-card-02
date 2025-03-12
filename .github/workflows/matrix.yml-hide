@@ -1,0 +1,76 @@
+name: multiple jobs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Job
+        run: echo "Setup abgeschlossen"
+
+  linter:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run linter
+        run: echo "Linter läuft"
+
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run tests
+        run: echo "Tests werden ausgeführt"
+
+  check_configuration:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check configuration
+        run: echo "Konfiguration wird geprüft"
+
+  update_docs:
+    needs: setup
+    runs-on: ubuntu-latest
+    continue-on-error: true  # Darf fehlschlagen
+    steps:
+      - name: Update docs
+        run: echo "Dokumentation wird aktualisiert"
+
+  build_deployment_artifact:
+    needs: [linter, test, check_configuration]  # update_docs darf fehlschlagen
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build deployment artifact
+        run: echo "Build läuft"
+
+  deploy:
+    needs: build_deployment_artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "Deployment gestartet"
+
+  # Neuer Compatibility Test Job mit Matrix-Strategie
+  compatibility_test:
+    needs: test  # Nur ausführen, wenn der Test-Job erfolgreich ist
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]  # Verschiedene Node.js-Versionen
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}  # Dynamische Node.js-Version aus der Matrix
+
+      - name: Run Compatibility Test
+        run: |
+          echo "Kompatibilitätstest für Node.js Version ${{ matrix.node-version }} läuft"
