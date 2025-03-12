@@ -23,7 +23,7 @@ jobs:
       - name: Upload node_modules artifact
         uses: actions/upload-artifact@v4
         with:
-          name: node-modules
+          name: node_modules
           path: node_modules
 
       - name: Lint code
@@ -38,7 +38,7 @@ jobs:
       - name: Download node_modules artifact
         uses: actions/download-artifact@v4
         with:
-          name: node-modules
+          name: node_modules
           path: node_modules
 
       - name: Run tests
@@ -54,7 +54,7 @@ jobs:
       - name: Download node_modules artifact
         uses: actions/download-artifact@v4
         with:
-          name: node-modules
+          name: node_modules
           path: node_modules
 
       - name: Build application
@@ -70,7 +70,7 @@ jobs:
       - name: Download node_modules artifact
         uses: actions/download-artifact@v4
         with:
-          name: node-modules
+          name: node_modules
           path: node_modules
 
       - name: Deploy application
