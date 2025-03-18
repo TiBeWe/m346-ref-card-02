@@ -20,7 +20,7 @@ jobs:
         run: npm install
 
       - name: Upload dependencies
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: node_modules
           path: node_modules
@@ -30,7 +30,7 @@ jobs:
     needs: setup
     steps:
       - name: Download dependencies
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: node_modules
           path: node_modules
@@ -43,7 +43,7 @@ jobs:
     needs: setup
     steps:
       - name: Download dependencies
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: node_modules
           path: node_modules
@@ -56,7 +56,7 @@ jobs:
     needs: [lint, test]
     steps:
       - name: Download dependencies
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: node_modules
           path: node_modules
@@ -65,7 +65,7 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: build
@@ -75,7 +75,7 @@ jobs:
     needs: build
     steps:
       - name: Download build artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build
           path: build
