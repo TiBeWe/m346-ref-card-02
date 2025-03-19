@@ -28,7 +28,7 @@ jobs:
           name: node_modules
           path: |
             node_modules
-            package.json
+            package-lock.json
 
   lint:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
           name: node_modules
           path: |
             node_modules
-            package.json
+            package-lock.json
 
       - name: Run tests
         run: npm run test
