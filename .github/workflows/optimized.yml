@@ -66,7 +66,7 @@ jobs:
 
       - name: Run tests
         run: |
-          npm install react-scripts
+          npx react-scripts --version
           npm run test
           
 
