@@ -17,7 +17,10 @@ jobs:
           node-version: '22.14.0'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npx react-scripts --version
+
     
 
       - name: Upload dependencies
