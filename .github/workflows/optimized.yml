@@ -17,10 +17,7 @@ jobs:
           node-version: '22.14.0'
 
       - name: Install dependencies
-        run: | 
-          npm install
-          npm install  react-scripts --save
-          cat package.json
+        run: npm install
     
 
       - name: Upload dependencies
@@ -69,7 +66,7 @@ jobs:
 
       - name: Run tests
         run: |
-          cat package.json
+          npm install react-scripts
           npm run test
           
 
