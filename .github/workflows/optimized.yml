@@ -20,6 +20,7 @@ jobs:
         run: | 
           npm install
           npm install  react-scripts --save
+          cat package.json
     
 
       - name: Upload dependencies
@@ -29,6 +30,7 @@ jobs:
           path: |
             node_modules
             package-lock.json
+            package.json
 
   lint:
     runs-on: ubuntu-latest
@@ -62,9 +64,14 @@ jobs:
           path: |
             node_modules
             package-lock.json
+            package.json
+            
 
       - name: Run tests
-        run: npm run test
+        run: |
+          cat package.json
+          npm run test
+          
 
   build:
     runs-on: ubuntu-latest
