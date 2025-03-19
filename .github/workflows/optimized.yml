@@ -19,14 +19,17 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-
+          npm run test
     
 
       - name: Upload dependencies
         uses: actions/upload-artifact@v4
         with:
-          name: all
-          path: .
+          name: node_modules
+          path: |
+            node_modules
+            package-lock.json
+            package.json
 
   lint:
     runs-on: ubuntu-latest
@@ -35,8 +38,8 @@ jobs:
       - name: Download dependencies
         uses: actions/download-artifact@v4
         with:
-          name: all
-          path: .
+          name: node_modules
+          path: node_modules
 
       - name: Run linter
         run: echo "Linting code..." # npm run lint
@@ -56,8 +59,11 @@ jobs:
       - name: Download dependencies
         uses: actions/download-artifact@v4
         with:
-          name: all
-          path: .
+          name: node_modules
+          path: |
+            node_modules
+            package-lock.json
+            package.json
             
 
       - name: Run tests
@@ -73,8 +79,8 @@ jobs:
       - name: Download dependencies
         uses: actions/download-artifact@v4
         with:
-          name: all
-          path: .
+          name: node_modules
+          path: node_modules
 
       - name: Build application
         run: npm run build
